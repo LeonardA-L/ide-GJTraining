@@ -1,0 +1,23 @@
+{
+    "gameClock": 2,
+    "resources": [
+        {
+            "name": "water",
+            "amount": 10,
+            "decay": 0.1,
+            "efficiency": 1.1
+        },
+		{
+            "name": "potatoes",
+            "amount": 10,
+            "decay": 0.1,
+            "efficiency": 1.1
+        },
+		{
+            "name": "oxygen",
+            "amount": 10,
+            "decay": 0,
+            "efficiency": 1.1
+        }
+    ]
+}
