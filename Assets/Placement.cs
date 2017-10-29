@@ -14,7 +14,11 @@ public class Placement : MonoBehaviour {
 
     public TextMesh whatText;
 
-    public Animator animator;
+    public Animator animCube;
+    public Animator animHealth;
+    public Transform healthTransform;
+
+    private float moduleHealth = 100.0f;
     // Use this for initialization
     void Start () {
         lastTime = Time.time;
@@ -35,9 +39,8 @@ public class Placement : MonoBehaviour {
 
     public void OnClick()
     {
-        Debug.Log("Ok click");
         activated = !activated;
-        animator.SetBool("activated", activated);
+        animCube.SetBool("activated", activated);
     }
 
     private void Update()
@@ -59,6 +62,10 @@ public class Placement : MonoBehaviour {
                 //OnClick();
             }
         }
+
+        /*healthTransform.localScale = new Vector3(0.2f, Mathf.Max(moduleHealth / 100.0f, 0.1f), 0.2f);
+        animHealth.SetFloat("health", moduleHealth);*/
+        
     }
 
     private void Tick()
@@ -75,5 +82,6 @@ public class Placement : MonoBehaviour {
         {
             res.amount = 0.0f;
         }
+        
     }
 }
