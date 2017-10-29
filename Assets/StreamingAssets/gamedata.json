@@ -5,19 +5,22 @@
             "name": "water",
             "amount": 10,
             "decay": 0.1,
-            "efficiency": 1.1
+            "efficiency": 1.1,
+            "damageRate": 2
         },
 		{
             "name": "potatoes",
             "amount": 10,
             "decay": 0.1,
-            "efficiency": 1.1
+            "efficiency": 1.1,
+            "damageRate": 2
         },
 		{
             "name": "electricity",
             "amount": 10,
             "decay": 0,
-            "efficiency": 1.1
+            "efficiency": 1.1,
+            "damageRate": 5
         }
     ]
 }

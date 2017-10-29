@@ -22,7 +22,7 @@ public class ResourceManager : MonoBehaviour {
             {
                 prevI += data.resources.Length;
             }
-            GameObject res = (GameObject)GameObject.Instantiate(Resources.Load("Resource"));
+            GameObject res = (GameObject)GameObject.Instantiate(Resources.Load("Module"));
             res.transform.position = new Vector3(0, 0, 0);
             Placement placement = res.GetComponent<Placement>();
             placement.id = i;

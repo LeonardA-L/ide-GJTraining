@@ -18,7 +18,7 @@ public class Placement : MonoBehaviour {
     public Animator animHealth;
     public Transform healthTransform;
 
-    private float moduleHealth = 100.0f;
+    public float moduleHealth = 100.0f;
     // Use this for initialization
     void Start () {
         lastTime = Time.time;
@@ -32,7 +32,7 @@ public class Placement : MonoBehaviour {
         fuel = _fuelResource;
         transform.position = new Vector3(0, (id) * 2, 0);
         // Update text position
-        text.rectTransform.anchoredPosition = new Vector3(100, (id + 1) * -30.0f, 0);
+        text.rectTransform.anchoredPosition = new Vector3(120, (id + 1) * -30.0f, 0);
 
         whatText.text = _resource.name + "(" + _fuelResource.name + "->" + _resource.name + ")";
     }
@@ -45,7 +45,7 @@ public class Placement : MonoBehaviour {
 
     private void Update()
     {
-        text.text = res.name + " " + res.amount.ToString("0.00");
+        text.text = res.name + ": " + res.amount.ToString("0.00") + " | health: " + moduleHealth.ToString("0.00");
 
         if ((Time.time - lastTime) > gameClock)
         {
@@ -63,8 +63,8 @@ public class Placement : MonoBehaviour {
             }
         }
 
-        /*healthTransform.localScale = new Vector3(0.2f, Mathf.Max(moduleHealth / 100.0f, 0.1f), 0.2f);
-        animHealth.SetFloat("health", moduleHealth);*/
+        healthTransform.localScale = new Vector3(0.2f, Mathf.Max(moduleHealth / 100.0f, 0.2f), 0.2f);
+        animHealth.SetFloat("health", moduleHealth);
         
     }
 
@@ -82,6 +82,13 @@ public class Placement : MonoBehaviour {
         {
             res.amount = 0.0f;
         }
-        
+
+        moduleHealth -= res.damageRate;
+        if(moduleHealth < 0.0f)
+        {
+            moduleHealth = 0.0f;
+            activated = false;
+            animCube.SetBool("activated", activated);
+        }
     }
 }
