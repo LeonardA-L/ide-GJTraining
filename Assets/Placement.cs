@@ -11,8 +11,12 @@ public class Placement : MonoBehaviour {
     public bool activated = false;
     private static int gameClock;
     private float lastTime;
-	// Use this for initialization
-	void Start () {
+
+    public TextMesh whatText;
+
+    public Animator animator;
+    // Use this for initialization
+    void Start () {
         lastTime = Time.time;
 
     }
@@ -26,16 +30,34 @@ public class Placement : MonoBehaviour {
         // Update text position
         text.rectTransform.anchoredPosition = new Vector3(100, (id + 1) * -30.0f, 0);
 
+        whatText.text = _resource.name + "(" + _fuelResource.name + "->" + _resource.name + ")";
+    }
+
+    public void OnClick()
+    {
+        Debug.Log("Ok click");
+        activated = !activated;
+        animator.SetBool("activated", activated);
     }
 
     private void Update()
     {
-        text.text = res.name + " " + res.amount;
+        text.text = res.name + " " + res.amount.ToString("0.00");
 
         if ((Time.time - lastTime) > gameClock)
         {
             lastTime = Time.time;
             Tick();
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        { // if left button pressed...
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit) && hit.transform.gameObject == gameObject)
+            {
+                //OnClick();
+            }
         }
     }
 
