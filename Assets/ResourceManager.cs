@@ -26,7 +26,7 @@ public class ResourceManager : MonoBehaviour {
             res.transform.position = new Vector3(0, 0, 0);
             Placement placement = res.GetComponent<Placement>();
             placement.id = i;
-            placement.Init(data.resources[i], data.resources[prevI], data.gameClock);
+            placement.Init(data.resources[i], data.resources[prevI], data);
         }
     }
 	

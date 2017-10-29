@@ -16,23 +16,26 @@ public class Placement : MonoBehaviour {
 
     public Animator animCube;
     public Animator animHealth;
-    public Transform healthTransform;
+    public Transform healthTransform = null;
 
     public float moduleHealth = 100.0f;
+    private float efficiencyModifier = 1;
+    private GameDataModel data;
     // Use this for initialization
     void Start () {
         lastTime = Time.time;
 
     }
-    public void Init(ResourceModel _resource, ResourceModel _fuelResource, int _gameClock)
+    public void Init(ResourceModel _resource, ResourceModel _fuelResource, GameDataModel _data)
     {
         Debug.Log(id + " " + _resource.name + " " +_fuelResource);
-        gameClock = _gameClock;
+        gameClock = _data.gameClock;
         res = _resource;
         fuel = _fuelResource;
+        data = _data;
         transform.position = new Vector3(0, (id) * 2, 0);
         // Update text position
-        text.rectTransform.anchoredPosition = new Vector3(120, (id + 1) * -30.0f, 0);
+        text.rectTransform.anchoredPosition = new Vector3(20, (id + 1) * -30.0f, 0);
 
         whatText.text = _resource.name + "(" + _fuelResource.name + "->" + _resource.name + ")";
     }
@@ -45,7 +48,7 @@ public class Placement : MonoBehaviour {
 
     private void Update()
     {
-        text.text = res.name + ": " + res.amount.ToString("0.00") + " | health: " + moduleHealth.ToString("0.00");
+        text.text = res.name + ": " + res.amount.ToString("0.00") + " | health: " + moduleHealth.ToString("0.00") + " | efficiency: " + (res.efficiency * efficiencyModifier);
 
         if ((Time.time - lastTime) > gameClock)
         {
@@ -65,7 +68,18 @@ public class Placement : MonoBehaviour {
 
         healthTransform.localScale = new Vector3(0.2f, Mathf.Max(moduleHealth / 100.0f, 0.2f), 0.2f);
         animHealth.SetFloat("health", moduleHealth);
-        
+
+        efficiencyModifier = 1.0f;
+        for (int i = 0; i < data.moduleHealthThresholds.Length; i++)
+        {
+            ModuleHealthThreshold thr = data.moduleHealthThresholds[i];
+            if(moduleHealth <= thr.threshold)
+            {
+                efficiencyModifier = thr.modifier;
+                break;
+            }
+        }
+
     }
 
     private void Tick()
@@ -74,7 +88,7 @@ public class Placement : MonoBehaviour {
 
         if(activated && fuel.amount > 0)
         {
-            res.amount += res.efficiency;
+            res.amount += res.efficiency * efficiencyModifier;
             fuel.amount -= 1;
         }
 
