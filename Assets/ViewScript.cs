@@ -18,6 +18,6 @@ public class ViewScript : MonoBehaviour {
 
     void OnMouseDown()
     {
-        p.OnClick();
+        p.OnClick(gameObject.name);
     }
 }

@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 95623550129001046}
   - component: {fileID: 114895644384030348}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: mod
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 65105752752898732}
   - component: {fileID: 23632487410001286}
   - component: {fileID: 95562492864248198}
+  - component: {fileID: 114773825209172180}
   m_Layer: 0
   m_Name: health
   m_TagString: Untagged
@@ -138,7 +139,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1355370904726548}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.2967196, y: 1.6542432, z: 6.0515842}
+  m_LocalPosition: {x: -6.220567, y: 0.40779495, z: 6.21147}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4535637988467472}
@@ -425,6 +426,18 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114773825209172180
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1094400960029680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c4353beeddb4f841bee93dbc628b665, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  p: {fileID: 114784072117680898}
 --- !u!114 &114784072117680898
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -451,6 +464,7 @@ MonoBehaviour:
     damageRate: 0
     name: 
   activated: 0
+  repairing: 0
   whatText: {fileID: 102945202729866832}
   animCube: {fileID: 95623550129001046}
   animHealth: {fileID: 95562492864248198}
@@ -517,7 +531,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1172368249632564}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -6.0515842}
+  m_LocalPosition: {x: 0, y: 0, z: -6.21147}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 224708990812009172}

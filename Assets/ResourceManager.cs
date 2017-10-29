@@ -5,7 +5,7 @@ using System.IO;
 
 public class ResourceManager : MonoBehaviour {
     string gameDataFileName = "gamedata.json";
-    GameDataModel data;
+    public GameDataModel data;
     public float gameClock;
     public int frame;
 
@@ -15,7 +15,8 @@ public class ResourceManager : MonoBehaviour {
         frame = 0;
         data = LoadGameData();
         Debug.Log(data.resources.Length);
-        for (int i = 0; i < data.resources.Length; i++)
+        int i = 0;
+        for (; i < data.resources.Length; i++)
         {
             int prevI = i - 1;
             if(prevI < 0)
@@ -26,8 +27,14 @@ public class ResourceManager : MonoBehaviour {
             res.transform.position = new Vector3(0, 0, 0);
             Placement placement = res.GetComponent<Placement>();
             placement.id = i;
-            placement.Init(data.resources[i], data.resources[prevI], data);
+            placement.Init(data.resources[i], data.resources[prevI], this);
         }
+
+        GameObject duct = (GameObject)GameObject.Instantiate(Resources.Load("Equipment"));
+        duct.transform.position = new Vector3(0, 0, 0);
+        Equipment equipment = duct.GetComponent<Equipment>();
+        equipment.id = i;
+        equipment.Init(data.ductTape, this);
     }
 	
 	// Update is called once per frame

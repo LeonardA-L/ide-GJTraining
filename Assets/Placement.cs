@@ -9,6 +9,7 @@ public class Placement : MonoBehaviour {
     public ResourceModel res;
     public ResourceModel fuel;
     public bool activated = false;
+    public bool repairing = false;
     private static int gameClock;
     private float lastTime;
 
@@ -20,19 +21,19 @@ public class Placement : MonoBehaviour {
 
     public float moduleHealth = 100.0f;
     private float efficiencyModifier = 1;
-    private GameDataModel data;
+    private ResourceManager manager = null;
     // Use this for initialization
     void Start () {
         lastTime = Time.time;
 
     }
-    public void Init(ResourceModel _resource, ResourceModel _fuelResource, GameDataModel _data)
+    public void Init(ResourceModel _resource, ResourceModel _fuelResource, ResourceManager resM)
     {
         Debug.Log(id + " " + _resource.name + " " +_fuelResource);
-        gameClock = _data.gameClock;
+        gameClock = resM.data.gameClock;
         res = _resource;
         fuel = _fuelResource;
-        data = _data;
+        manager = resM;
         transform.position = new Vector3(0, (id) * 2, 0);
         // Update text position
         text.rectTransform.anchoredPosition = new Vector3(20, (id + 1) * -30.0f, 0);
@@ -40,10 +41,16 @@ public class Placement : MonoBehaviour {
         whatText.text = _resource.name + "(" + _fuelResource.name + "->" + _resource.name + ")";
     }
 
-    public void OnClick()
+    public void OnClick(string name)
     {
-        activated = !activated;
-        animCube.SetBool("activated", activated);
+        if(name == "mod")
+        {
+            activated = !activated;
+            animCube.SetBool("activated", activated);
+        }
+        else if (name =="health") {
+            repairing = true;
+        }
     }
 
     private void Update()
@@ -56,34 +63,36 @@ public class Placement : MonoBehaviour {
             Tick();
         }
 
-        if (Input.GetMouseButtonDown(0))
-        { // if left button pressed...
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit) && hit.transform.gameObject == gameObject)
-            {
-                //OnClick();
-            }
-        }
-
         healthTransform.localScale = new Vector3(0.2f, Mathf.Max(moduleHealth / 100.0f, 0.2f), 0.2f);
         animHealth.SetFloat("health", moduleHealth);
 
         efficiencyModifier = 1.0f;
-        for (int i = 0; i < data.moduleHealthThresholds.Length; i++)
+        for (int i = 0; i < manager.data.moduleHealthThresholds.Length; i++)
         {
-            ModuleHealthThreshold thr = data.moduleHealthThresholds[i];
+            ModuleHealthThreshold thr = manager.data.moduleHealthThresholds[i];
             if(moduleHealth <= thr.threshold)
             {
                 efficiencyModifier = thr.modifier;
                 break;
             }
         }
+        
+        if(!Input.GetMouseButton(0))
+        {
+            repairing = false;
+        }
 
     }
 
     private void Tick()
     {
+        if (moduleHealth < 0.0f)
+        {
+            moduleHealth = 0.0f;
+            activated = false;
+            animCube.SetBool("activated", activated);
+        }
+
         res.amount -= res.decay;
 
         if(activated && fuel.amount > 0)
@@ -97,12 +106,20 @@ public class Placement : MonoBehaviour {
             res.amount = 0.0f;
         }
 
-        moduleHealth -= res.damageRate;
-        if(moduleHealth < 0.0f)
+        if(activated)
         {
-            moduleHealth = 0.0f;
-            activated = false;
-            animCube.SetBool("activated", activated);
+            moduleHealth -= res.damageRate;
+        }
+
+        if (repairing && manager.data.ductTape.amount >= manager.data.ductTape.efficiency)
+        {
+            moduleHealth += manager.data.ductTape.efficiency;
+            manager.data.ductTape.amount -= 1;
+
+            if (manager.data.ductTape.amount < 0.0f)
+            {
+                manager.data.ductTape.amount = 0.0f;
+            }
         }
     }
 }

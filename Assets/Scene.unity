@@ -212,6 +212,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96608fc16f4a9c1499383a0e28b37ee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+    resources: []
+    gameClock: 1
+    moduleHealthThresholds: []
+    ductTape:
+      amount: 0
+      decay: 0
+      efficiency: 0
+      damageRate: 0
+      name: 
   gameClock: 0
   frame: 0
 --- !u!1 &1829320154

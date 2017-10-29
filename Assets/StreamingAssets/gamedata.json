@@ -38,7 +38,12 @@
             "amount": 10,
             "decay": 0,
             "efficiency": 1.1,
-            "damageRate": 5
+            "damageRate": 4
         }
-    ]
+    ],
+    "ductTape": {
+        "name": "ductTape",
+        "amount": 200,
+        "efficiency": 5
+    }
 }
