@@ -12,10 +12,15 @@ public class ResourceManager : MonoBehaviour {
     public bool timeRuns = false;
 
     public Text timerText;
+    public DialogManager dialogManager;
 
     private float timer = 0;
     private Equipment ductTape;
     private List<Placement> resources;
+
+    // TEST stuf
+    private bool didDialog1 = false;
+    private bool didDialog2 = false;
 
     // Use this for initialization
     void Start ()
@@ -55,6 +60,22 @@ public class ResourceManager : MonoBehaviour {
         {
             timer += Time.deltaTime;
             frame++;
+
+            if(timer >= 5.0f && !didDialog1) {
+                didDialog1 = true;
+                List<string> parts = new List<string>();
+                parts.Add("Salut les Seagulls, j'espère que vous aimez bien le proto allez salut.");
+                StartDialog(parts);
+            }
+
+            if (timer >= 10.0f && !didDialog2)
+            {
+                didDialog2 = true;
+                List<string> parts = new List<string>();
+                parts.Add("Ma soeur s'est faite mordre par un élan une fois.");
+                parts.Add("C'est dangereux les élans.");
+                StartDialog(parts);
+            }
         }
 
         if ((timer - lastTime) > data.gameClock)
@@ -69,6 +90,16 @@ public class ResourceManager : MonoBehaviour {
     public void ToggleTime()
     {
         timeRuns = !timeRuns;
+    }
+
+    public void Pause()
+    {
+        timeRuns = false;
+    }
+
+    public void Play()
+    {
+        timeRuns = true;
     }
 
     private void Tick()
@@ -103,5 +134,23 @@ public class ResourceManager : MonoBehaviour {
             Debug.LogError("Cannot load game data!");
             throw new System.Exception("Cannot load data");
         }
+    }
+
+    private void StartDialog(List<string> parts)
+    {
+        Pause();
+        dialogManager.StartDialog(parts);
+    }
+
+    private void StartDialog(string singlePart)
+    {
+        List<string> parts = new List<string>();
+        parts.Add(singlePart);
+        StartDialog(parts);
+    }
+
+    public void EndDialog()
+    {
+        Play();
     }
 }
