@@ -9,16 +9,18 @@ public class DialogManager : MonoBehaviour {
     public ResourceManager resM;
     private int idx = 0;
     private List<string> parts;
+    private bool active = false;
 
     // Use this for initialization
     void Start () {
         window.SetActive(false);
         idx = 0;
+        active = false;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButtonDown(0))
+        if (active && Input.GetMouseButtonDown(0))
         {
             Next();
         }
@@ -29,6 +31,7 @@ public class DialogManager : MonoBehaviour {
         parts = _parts;
         window.SetActive(true);
         idx = -1;
+        active = true;
         Next();
     }
 
@@ -49,6 +52,7 @@ public class DialogManager : MonoBehaviour {
         window.SetActive(false);
         idx = 0;
         parts = null;
+        active = false;
 
         resM.EndDialog();
     }
