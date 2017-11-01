@@ -1,20 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.IO;
 
 public class ResourceManager : MonoBehaviour {
     string gameDataFileName = "gamedata.json";
     public GameDataModel data;
-    public float gameClock;
     public int frame;
+    private float lastTime;
+    public bool timeRuns = false;
+
+    public Text timerText;
+
+    private float timer = 0;
+    private Equipment ductTape;
+    private List<Placement> resources;
 
     // Use this for initialization
-    void Start () {
-        gameClock = 0.0f;
+    void Start ()
+    {
+        resources = new List<Placement>();
+        lastTime = 0;
         frame = 0;
         data = LoadGameData();
-        Debug.Log(data.resources.Length);
         int i = 0;
         for (; i < data.resources.Length; i++)
         {
@@ -28,6 +37,7 @@ public class ResourceManager : MonoBehaviour {
             Placement placement = res.GetComponent<Placement>();
             placement.id = i;
             placement.Init(data.resources[i], data.resources[prevI], this);
+            resources.Add(placement);
         }
 
         GameObject duct = (GameObject)GameObject.Instantiate(Resources.Load("Equipment"));
@@ -35,13 +45,42 @@ public class ResourceManager : MonoBehaviour {
         Equipment equipment = duct.GetComponent<Equipment>();
         equipment.id = i;
         equipment.Init(data.ductTape, this);
+        ductTape = equipment;
+        timeRuns = true;
     }
 	
 	// Update is called once per frame
 	void Update () {
-        gameClock += Time.deltaTime;
-        frame++;
+        if(timeRuns)
+        {
+            timer += Time.deltaTime;
+            frame++;
+        }
 
+        if ((timer - lastTime) > data.gameClock)
+        {
+            lastTime = Time.time;
+            Tick();
+        }
+
+        timerText.text = "T:" + timer.ToString("0.00") + "s";
+    }
+
+    public void ToggleTime()
+    {
+        timeRuns = !timeRuns;
+    }
+
+    private void Tick()
+    {
+        if (timeRuns)
+        {
+            for (int i = 0; i < resources.Count; i++)
+            {
+                resources[i].Tick();
+            }
+            ductTape.Tick();
+        }
     }
 
     private GameDataModel LoadGameData()

@@ -37,8 +37,8 @@ public class Equipment : MonoBehaviour {
         }
     }
 
-    private void Tick()
+    public void Tick()
     {
-        
+
     }
 }

@@ -11,7 +11,6 @@ public class Placement : MonoBehaviour {
     public bool activated = false;
     public bool repairing = false;
     private static int gameClock;
-    private float lastTime;
 
     public TextMesh whatText;
 
@@ -24,7 +23,6 @@ public class Placement : MonoBehaviour {
     private ResourceManager manager = null;
     // Use this for initialization
     void Start () {
-        lastTime = Time.time;
 
     }
     public void Init(ResourceModel _resource, ResourceModel _fuelResource, ResourceManager resM)
@@ -57,12 +55,6 @@ public class Placement : MonoBehaviour {
     {
         text.text = res.name + ": " + res.amount.ToString("0.00") + " | health: " + moduleHealth.ToString("0.00") + " | efficiency: " + (res.efficiency * efficiencyModifier);
 
-        if ((Time.time - lastTime) > gameClock)
-        {
-            lastTime = Time.time;
-            Tick();
-        }
-
         healthTransform.localScale = new Vector3(0.2f, Mathf.Max(moduleHealth / 100.0f, 0.2f), 0.2f);
         animHealth.SetFloat("health", moduleHealth);
 
@@ -84,7 +76,7 @@ public class Placement : MonoBehaviour {
 
     }
 
-    private void Tick()
+    public void Tick()
     {
         if (moduleHealth < 0.0f)
         {
