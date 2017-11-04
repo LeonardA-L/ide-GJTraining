@@ -55,16 +55,16 @@ public class Dialogs
 
     static bool Step0_Water_Tank_Still_Not_Active(ResourceManager _resM)
     {
-        return _resM.OnboardingStep == 0    // OnBoardingStep is 0
+        return _resM.OnboardingStep == 0     // OnBoardingStep is 0
             && timeIs(10.0f, _resM)          // AND timer is at 10s
-            && !isWaterTankActive(_resM);   // AND water tank is NOT active
+            && !isWaterTankActive(_resM);    // AND water tank is NOT active
     }
 
     static bool Step0_Water_Tank_Active(ResourceManager _resM)
     {
         return _resM.OnboardingStep == 0    // OnBoardingStep is 0
             && timeIs(6.0f, _resM)          // AND timer is at 6s (or more)
-            && isWaterTankActive(_resM);   // AND water tank is active
+            && isWaterTankActive(_resM);    // AND water tank is active
     }
 
     static bool Step1_Generator_Is_Repaired(ResourceManager _resM)
@@ -72,6 +72,13 @@ public class Dialogs
         return _resM.OnboardingStep == 1                        // OnBoardingStep is 1
             && _resM.GetModuleHealth("electricity") >= 80.0f;   // AND generator health is more than 80%
     }
+
+
+
+
+
+
+
 
 
 
@@ -87,7 +94,21 @@ public class Dialogs
     {
         Debug.Log("User just did step 1");
         IncrementOnboardingStep(_resM);
+        // Example: Decrease number of potatoes
+        // Example: Deactivate generator for 10s
+        // ...
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
