@@ -10,12 +10,15 @@ public class DialogManager : MonoBehaviour {
     private int idx = 0;
     private List<string> parts;
     private bool active = false;
+    private List<DialogEvent> events;
+    private DialogEvent currentDialog;
 
     // Use this for initialization
     void Start () {
         window.SetActive(false);
         idx = 0;
         active = false;
+        events = Dialogs.InitDialogs();
     }
 	
 	// Update is called once per frame
@@ -24,11 +27,26 @@ public class DialogManager : MonoBehaviour {
         {
             Next();
         }
+        if (!active)
+        {
+            for (int i = 0; i < events.Count; i++)
+            {
+                DialogEvent ev = events[i];
+                if(!ev.isDone() && ev.shouldTrigger(resM))
+                {
+                    StartDialog(ev);
+                    break;
+                }
+            }
+        }
     }
 
-    public void StartDialog(List<string> _parts)
+    public void StartDialog(DialogEvent _de)
     {
-        parts = _parts;
+        _de.StartThis();
+        currentDialog = _de;
+        parts = _de.parts;
+        resM.Pause();
         window.SetActive(true);
         idx = -1;
         active = true;
@@ -53,7 +71,10 @@ public class DialogManager : MonoBehaviour {
         idx = 0;
         parts = null;
         active = false;
-
+        if(currentDialog.postHook != null)
+        {
+            currentDialog.postHook(resM);
+        }
         resM.EndDialog();
     }
 }

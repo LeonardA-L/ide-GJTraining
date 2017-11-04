@@ -7,5 +7,6 @@ public class ResourceModel : System.Object
     public float decay = 0;
     public float efficiency = 0;
     public float damageRate = 0;
+    public float startHealth = 100;
     public string name;
 }

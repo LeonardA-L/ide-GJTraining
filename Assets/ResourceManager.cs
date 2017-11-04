@@ -13,14 +13,24 @@ public class ResourceManager : MonoBehaviour {
 
     public Text timerText;
     public DialogManager dialogManager;
+    private int onboardingStep = 0;
 
-    private float timer = 0;
+    public float timer = 0;
     private Equipment ductTape;
     private List<Placement> resources;
 
-    // TEST stuf
-    private bool didDialog1 = false;
-    private bool didDialog2 = false;
+    public int OnboardingStep
+    {
+        get
+        {
+            return onboardingStep;
+        }
+
+        set
+        {
+            onboardingStep = value;
+        }
+    }
 
     // Use this for initialization
     void Start ()
@@ -61,7 +71,7 @@ public class ResourceManager : MonoBehaviour {
             timer += Time.deltaTime;
             frame++;
 
-            if(timer >= 5.0f && !didDialog1) {
+            /*if(timer >= 5.0f && !didDialog1) {
                 didDialog1 = true;
                 List<string> parts = new List<string>();
                 parts.Add("Salut les Seagulls, j'espère que vous aimez bien le proto allez salut.");
@@ -75,7 +85,7 @@ public class ResourceManager : MonoBehaviour {
                 parts.Add("Ma soeur s'est faite mordre par un élan une fois.");
                 parts.Add("C'est dangereux les élans.");
                 StartDialog(parts);
-            }
+            }*/
         }
 
         if ((timer - lastTime) > data.gameClock)
@@ -135,7 +145,7 @@ public class ResourceManager : MonoBehaviour {
             throw new System.Exception("Cannot load data");
         }
     }
-
+    /*
     private void StartDialog(List<string> parts)
     {
         Pause();
@@ -148,9 +158,33 @@ public class ResourceManager : MonoBehaviour {
         parts.Add(singlePart);
         StartDialog(parts);
     }
-
+    */
     public void EndDialog()
     {
         Play();
+    }
+
+    public bool IsActive(string name)
+    {
+        for (int i = 0; i < resources.Count; i++)
+        {
+            if(resources[i].res.name == name)
+            {
+                return resources[i].activated;
+            }
+        }
+        return false;
+    }
+
+    public float GetModuleHealth(string name)
+    {
+        for (int i = 0; i < resources.Count; i++)
+        {
+            if (resources[i].res.name == name)
+            {
+                return resources[i].moduleHealth;
+            }
+        }
+        return -1.0f;
     }
 }

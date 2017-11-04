@@ -32,6 +32,7 @@ public class Placement : MonoBehaviour {
         res = _resource;
         fuel = _fuelResource;
         manager = resM;
+        moduleHealth = res.startHealth;
         transform.position = new Vector3(0, (id) * 2, 0);
         // Update text position
         text.rectTransform.anchoredPosition = new Vector3(20, (id + 1) * -30.0f, 0);
